@@ -8,14 +8,15 @@ import warnings
 import requests
 import concurrent.futures
 import plotly.express as px
+import os  # 新增：用于读取环境变量
 
 # 消音警告
 warnings.filterwarnings("ignore", message="missing ScriptRunContext!")
 
-# ------------------- 火山方舟（豆包）API 配置 -------------------
-API_KEY = "4ad4b2e3-63a5-4b19-b785-60d819a31fdd"
-API_SECRET = "TURRNE56UmxNak15TW1VNU5ERTBOemt4T0dNMllqbGtPR1F4TVdGaE5tSQ=="
-MODEL_ID = "bot-20260308220734-hgmhn"
+# ------------------- 火山方舟（豆包）API 配置（从 Secrets 读取） -------------------
+API_KEY = os.getenv("DOUBAN_API_KEY")
+API_SECRET = os.getenv("DOUBAN_API_SECRET")
+MODEL_ID = os.getenv("DOUBAN_DEPLOY_ID")
 
 
 def extract_text_from_pdf(pdf_file):
