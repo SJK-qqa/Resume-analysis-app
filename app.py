@@ -15,9 +15,10 @@ import time
 warnings.filterwarnings("ignore", message="missing ScriptRunContext!")
 
 # ------------------- 火山方舟（豆包）API 配置（从 Secrets 读取） -------------------
-API_KEY = os.getenv("4ad4b2e3-63a5-4b19-b785-60d819a31fdd")
-API_SECRET = os.getenv("TURRNE56UmxNak15TW1VNU5ERTBOemt4T0dNMllqbGtPR1F4TVdGaE5tSQ==")
-MODEL_ID = os.getenv("bot-20260308220734-hgmhn")
+API_KEY = "4ad4b2e3-63a5-4b19-b785-60d819a31fdd"
+API_SECRET = "TURRNE56UmxNak15TW1VNU5ERTBOemt4T0dNMllqbGtPR1F4TVdGaE5tSQ=="
+MODEL_ID = "ep-20260601001524-gbnq8"
+API_URL = "https://ark.cn-beijing.volces.com/api/v3/chat/completions"
 
 
 def extract_text_from_pdf(pdf_file):
@@ -80,12 +81,12 @@ def llm_analyze_single(resume_text):
         }
 
     # 火山方舟API地址
-    api_url = "https://ark.cn-beijing.volces.com/api/v3/chat/completions"
     headers = {
-        "Authorization": f"Bearer {token}",
+        "Authorization": f"Bearer {API_KEY}",  # 关键改动：直接用API Key，前面加“Bearer ”
         "Content-Type": "application/json"
     }
-
+    # 然后发起请求
+    response = requests.post(API_URL, headers=headers, json=data, timeout=30)
     # 优化后的提示词（强制JSON）
     prompt = """你是专业HR简历分析师，仅输出JSON，无任何多余文字。
 请分析以下简历，输出字段：姓名、学历、专业、工作年限、应聘岗位类别、核心技能（列表）、岗位匹配度（0-100整数）、匹配度分析。
